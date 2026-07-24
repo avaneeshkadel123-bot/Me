@@ -7,9 +7,15 @@ from groq import Groq
 # Load environment variables
 load_dotenv()
 
-# Dynamically resolve absolute path to templates folder from api/
+# Dynamically find templates/ directory in Vercel's execution environment
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'templates'))
+POSSIBLE_TEMPLATE_DIRS = [
+    os.path.abspath(os.path.join(BASE_DIR, '..', 'templates')),  # Root templates folder
+    os.path.abspath(os.path.join(os.getcwd(), 'templates')),      # Current working directory templates
+    os.path.join(BASE_DIR, 'templates')                         # Fallback nested templates
+]
+
+TEMPLATE_DIR = next((d for d in POSSIBLE_TEMPLATE_DIRS if os.path.exists(d)), POSSIBLE_TEMPLATE_DIRS[0])
 
 app = Flask(__name__, template_folder=TEMPLATE_DIR)
 
@@ -21,6 +27,7 @@ groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
 SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY", "")
 
+# Fallback Datasets
 FALLBACK_CORPORATE_QUESTIONS = [
     "Thank you for joining this career simulation panel. US professional environments place a heavy emphasis on behavioral indicators. Let's begin by discussing a time when you had to manage competing deliverables or project constraints. What specific actions did you implement to ensure success?",
     "Could you walk me through a technical initiative you spearheaded where you encountered severe ambiguity? How did you define the project parameters and align your team?",
@@ -35,7 +42,7 @@ FALLBACK_COLLEGE_QUESTIONS = [
 
 @app.route('/')
 def home():
-    """Renders the single-page glassmorphic user workspace dashboard."""
+    """Renders the workspace dashboard."""
     return render_template(
         'index.html',
         supabase_url=SUPABASE_URL,
@@ -44,7 +51,7 @@ def home():
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    """Validates cloud service integrity and connection dependencies."""
+    """Validates cloud service integrity."""
     return jsonify({
         "status": "operational",
         "groq_connected": groq_client is not None,
@@ -79,13 +86,10 @@ def start_session():
 
     system_instruction = (
         "You are an elite US University Admissions Officer. Generate exactly ONE unique, challenging, "
-        "and highly realistic initial opening interview question designed for an elite college applicant. "
-        "Focus on themes of holistic character, community contribution, unique background, or personal growth. "
-        "Do not output greetings, prefaces, or extra text. Output only the single question."
+        "and highly realistic initial opening interview question. Output only the question."
     ) if is_college else (
-        "You are a principal corporate recruiter managing high-stakes behavioral screening loops in the US market. "
-        "Generate exactly ONE unique, realistic, and highly professional initial interview question targeting "
-        "a candidate's behavioral history. Do not output greetings, prefaces, or extra text. Output only the single question."
+        "You are a principal corporate recruiter. Generate exactly ONE unique, realistic, and highly professional "
+        "initial interview question targeting behavioral history. Output only the question."
     )
 
     try:
