@@ -125,7 +125,7 @@ def process_response():
     cleaned_transcript = transcript.strip()
     if not cleaned_transcript:
         return jsonify({"success": False, "error": "No new transcript text provided to advance the session conversation."}), 400
-        
+
     if not history or history[-1].get('content') != cleaned_transcript:
         history.append({"role": "user", "content": cleaned_transcript})
     
