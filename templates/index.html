@@ -837,7 +837,7 @@
                 const res = await fetch('/api/session/start', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ track: currentTrack, personal_context: personalContext })
+                    body: JSON.stringify({ track: currentTrack, personal_context: currentPersonalContext })
                 });
                 const data = await res.json();
                 if (data.success) {
