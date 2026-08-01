@@ -63,7 +63,6 @@ def start_session():
     """Dynamically generates a completely unique opening interview prompt based on the selected US track context."""
     data = request.get_json() or {}
     track = data.get('track', 'General Corporate Interview')
-    personal_context = data.get('personal_context', '').strip()
     is_college = "college" in track.lower() or "admission" in track.lower()
 
     if not groq_client:
@@ -78,30 +77,19 @@ def start_session():
             ]
         }), 200
 
-    personal_context_line = (
-        f"\n\nIMPORTANT — The candidate has shared the following personal background. "
-        f"Use this to generate a highly personalized, relevant opening question that connects "
-        f"directly to their specific hobbies, experiences, or background:\n{personal_context}"
-        if personal_context else ""
-    )
-
     if is_college:
         system_instruction = (
             "You are an elite US University Admissions Officer. Generate exactly ONE unique, challenging, "
             "and highly realistic initial opening interview question designed for an elite college applicant. "
-            "Focus on themes of holistic character, community contribution, unique background, personal growth, "
-            "or how their hobbies and experiences have shaped them as a person. "
+            "Focus on themes of holistic character, community contribution, unique background, or personal growth. "
             "Do not output greetings, prefaces, or extra text. Output only the single question."
-            + personal_context_line
         )
     else:
         system_instruction = (
             "You are a principal corporate recruiter managing high-stakes behavioral screening loops in the US market. "
             "Generate exactly ONE unique, realistic, and highly professional initial interview question targeting "
-            "a candidate's behavioral history, leadership experiences, or how their personal interests and hobbies "
-            "have shaped their professional skills and work ethic. "
+            "a candidate's behavioral history (e.g., leadership, dealing with ambiguity, or project failures). "
             "Do not output greetings, prefaces, or extra text. Output only the single question."
-            + personal_context_line
         )
 
     try:
@@ -133,7 +121,6 @@ def process_response():
     transcript = data.get('transcript', '')
     history = data.get('history', [])
     track = data.get('track', 'General Corporate Interview')
-    personal_context = data.get('personal_context', '').strip()
     is_college = "college" in track.lower() or "admission" in track.lower()
 
     cleaned_transcript = transcript.strip()
@@ -149,26 +136,17 @@ def process_response():
         history.append({"role": "assistant", "content": next_question})
         return jsonify({"success": True, "next_question": next_question, "history": history}), 200
 
-    personal_context_line = (
-        f"\n\nCandidate background context (use this to personalize follow-up questions when relevant): {personal_context}"
-        if personal_context else ""
-    )
-
     if is_college:
         context_guideline = (
             "You are an elite US University Admissions Officer. The user is an applicant. Review the conversation history. "
             "Ask exactly ONE incisive, direct follow-up question that builds naturally on their last response or moves to a "
-            "related holistic candidate evaluation metric — especially around their hobbies, personal growth, and how their "
-            "experiences have shaped them. Do not offer encouragement, feedback, or commentary. Output only the single question."
-            + personal_context_line
+            "related holistic candidate evaluation metric. Do not offer encouragement, feedback, or commentary. Output only the single question."
         )
     else:
         context_guideline = (
             "You are an expert technical recruiter interviewing a candidate for a highly competitive US corporate role. "
             "Review the conversation history. Ask exactly ONE professional follow-up question that builds on their story or probes "
-            "for missing elements of the STAR method (metrics, actions, results), or digs deeper into how their personal "
-            "interests and hobbies have developed transferable professional skills. Do not offer validation or filler phrases. Output only the question."
-            + personal_context_line
+            "for missing elements of the STAR method (metrics, actions, results). Do not offer validation or filler phrases. Output only the question."
         )
 
     messages = [{"role": "system", "content": context_guideline}]
@@ -321,19 +299,63 @@ def predict_college_chances():
     target_college = data.get('target_college', '').strip()
 
     if not groq_client:
+        # Stat-appropriate fallback schools
+        if gpa >= 3.7:
+            fb_reach = ["Georgetown University", "University of Michigan", "NYU"]
+            fb_target = ["Fordham University", "Tulane University", "University of Vermont"]
+            fb_safety = ["Rutgers University", "University of Massachusetts Amherst", "Arizona State University"]
+        elif gpa >= 3.2:
+            fb_reach = ["University of Oregon", "Drexel University", "University of Denver"]
+            fb_target = ["Pace University", "Quinnipiac University", "University of Montana"]
+            fb_safety = ["SUNY Albany", "Northern Arizona University", "Western Michigan University"]
+        elif gpa >= 2.5:
+            fb_reach = ["University of New Mexico", "Eastern Michigan University", "University of Southern Maine"]
+            fb_target = ["Western Kentucky University", "Murray State University", "Fitchburg State University"]
+            fb_safety = ["Southern New Hampshire University", "Post University", "Granite State College"]
+        else:
+            fb_reach = ["Western New England University", "Limestone University", "Alcorn State University"]
+            fb_target = ["Southern New Hampshire University", "Post University", "National University"]
+            fb_safety = ["Community College options", "Excelsior University", "Western Governors University"]
         return jsonify({
             "success": True,
-            "reach": ["Harvard University", "Stanford University", "MIT"],
-            "target": ["University of Michigan", "UC Berkeley", "NYU"],
-            "safety": ["Penn State University", "USC", "University of Florida"],
-            "chances_summary": f"Based on your GPA of {gpa} and academic rigor ({aps} AP/IB courses), you present a strong profile for Top 30 universities. Elevating your vocal interview presence will significantly amplify your holistic score.",
-            "target_college_eval": f"With unweighted GPA {gpa}{f' and weighted GPA {weighted_gpa}' if weighted_gpa else ''}, your profile appears competitive. Practice interview delivery to strengthen your holistic application." if target_college else "",
+            "reach": fb_reach,
+            "target": fb_target,
+            "safety": fb_safety,
+            "chances_summary": f"With a {gpa} GPA and {aps} AP/IB courses, your profile targets schools matched to your academic level. Connect a Groq API key for a fully personalized AI assessment.",
+            "target_college_eval": f"Based on a {gpa} GPA, your chances at {target_college} depend heavily on their median admitted GPA. Connect a Groq API key for a detailed evaluation." if target_college else "",
             "growth_tips": [
-                "Focus on framing your extracurricular leadership using concrete outcomes.",
-                "Ace your alumni interview rounds by eliminating filler words like 'um' and 'like'.",
-                "Highlight unique research or personal passion projects in supplemental essays."
+                "Focus on raising your GPA — even a 0.2 point increase opens significantly more doors.",
+                "Strengthen your personal statement to highlight unique experiences and growth.",
+                "Pursue meaningful extracurriculars that show leadership and long-term commitment."
             ]
         }), 200
+
+    # Build stat-aware tier guidance so the LLM picks schools that actually match the numbers
+    if gpa >= 3.9:
+        gpa_tier = "elite (top 1-5% of applicants)"
+        reach_guidance = "Reach = Ivy League, MIT, Stanford, Caltech, Duke, Johns Hopkins"
+        target_guidance = "Target = top 20-35 schools like UCLA, USC, NYU, Georgetown, UMich, UVA"
+        safety_guidance = "Safety = solid state flagships like Penn State, University of Maryland, Pitt"
+    elif gpa >= 3.6:
+        gpa_tier = "strong (top 10-20% of applicants)"
+        reach_guidance = "Reach = top 25 schools like Georgetown, UMich, UVA, UCLA, NYU"
+        target_guidance = "Target = schools ranked 30-60 like Fordham, Tulane, University of Vermont, Lehigh"
+        safety_guidance = "Safety = state schools like Rutgers, UMass Amherst, Arizona State, Temple"
+    elif gpa >= 3.2:
+        gpa_tier = "average (middle 40% of applicants)"
+        reach_guidance = "Reach = schools ranked 50-80 like University of Oregon, Drexel, University of Denver"
+        target_guidance = "Target = schools ranked 80-150 like University of Montana, Pace University, Quinnipiac"
+        safety_guidance = "Safety = open-enrollment or high-acceptance schools like SUNY schools, Northern Arizona, Western Michigan"
+    elif gpa >= 2.5:
+        gpa_tier = "below average"
+        reach_guidance = "Reach = schools with 50-70% acceptance like University of New Mexico, Eastern Michigan"
+        target_guidance = "Target = schools with 70-85% acceptance like Western Kentucky, Murray State, Fitchburg State"
+        safety_guidance = "Safety = high-acceptance schools (85-100%) like Southern New Hampshire, Strayer, community colleges"
+    else:
+        gpa_tier = "very low — most 4-year universities will be extremely difficult"
+        reach_guidance = "Reach = schools with 60-80% acceptance like Western New England University, Limestone University"
+        target_guidance = "Target = schools with 80-95% acceptance like Southern New Hampshire University, Post University"
+        safety_guidance = "Safety = open-enrollment institutions and community colleges with near 100% acceptance"
 
     # Build the prompt with all available fields
     test_scores_line = ""
@@ -345,22 +367,35 @@ def predict_college_chances():
     target_line = f"- Target University: {target_college}\n" if target_college else ""
 
     prompt = (
-        f"Act as a top US College Admissions Director. Evaluate this high school applicant:\n"
-        f"- Unweighted GPA: {gpa}/4.0\n"
+        f"You are a brutally honest US college admissions counselor with deep knowledge of actual admission statistics.\n"
+        f"You MUST match schools to the applicant's real stats. Do NOT recommend elite or selective schools if stats are weak.\n\n"
+        f"APPLICANT STATS:\n"
+        f"- Unweighted GPA: {gpa}/4.0 — this is {gpa_tier}\n"
         f"{weighted_line}"
         f"{test_scores_line}"
-        f"- Rigor: {aps} AP/IB/Honors courses\n"
-        f"- Extracurricular Leadership Level: {ec_level}\n"
+        f"- AP/IB/Honors Courses: {aps}\n"
+        f"- Extracurricular Level: {ec_level}\n"
         f"- Target Major: {major}\n"
         f"{target_line}\n"
-        f"Provide a realistic JSON response with these keys:\n"
-        f"1. 'reach': Array of 3 Reach universities (<25% admission probability)\n"
-        f"2. 'target': Array of 3 Target universities (40-70% admission probability)\n"
-        f"3. 'safety': Array of 3 Safety universities (>80% admission probability)\n"
-        f"4. 'chances_summary': A 2-sentence realistic assessment of their admissions competitiveness.\n"
-        f"5. 'growth_tips': Array of 3 specific tips to improve their chances.\n"
-        f"6. 'target_college_eval': If a target university was specified, a 1-2 sentence realistic evaluation of their odds there. Otherwise empty string.\n"
-        f"Output ONLY valid JSON."
+        f"CRITICAL RULES — follow these exactly:\n"
+        f"- {reach_guidance}\n"
+        f"- {target_guidance}\n"
+        f"- {safety_guidance}\n"
+        f"- NEVER put a school in Reach if the applicant has near-zero chance (below 5%). Those are impossible, not reaches.\n"
+        f"- NEVER list MIT, Stanford, Harvard, Yale, Princeton, Columbia, Penn, Brown, Dartmouth, Cornell, or Duke "
+        f"as Reach unless GPA is 3.7+ AND SAT is 1400+ or ACT is 32+.\n"
+        f"- NEVER list University of Michigan, UCLA, UC Berkeley, Georgetown, NYU, or UVA as Target "
+        f"unless GPA is 3.5+ AND test scores are at least SAT 1200 or ACT 26.\n"
+        f"- Schools must be REAL US universities that actually exist.\n"
+        f"- Be realistic and honest — a student with a {gpa} GPA cannot realistically target top-20 schools.\n\n"
+        f"Return a JSON object with these exact keys:\n"
+        f"1. 'reach': Array of exactly 3 university name strings that are genuinely reachable but unlikely given the stats\n"
+        f"2. 'target': Array of exactly 3 university name strings where admission is realistically possible\n"
+        f"3. 'safety': Array of exactly 3 university name strings where admission is very likely\n"
+        f"4. 'chances_summary': 2 honest sentences assessing this applicant's real competitiveness based on their actual numbers\n"
+        f"5. 'growth_tips': Array of exactly 3 specific actionable tips to improve their chances\n"
+        f"6. 'target_college_eval': If a specific target university was given, give an honest 1-2 sentence assessment of their real odds there based on the school's actual median stats. Otherwise empty string.\n"
+        f"Output ONLY valid JSON. Every array value must be a plain string."
     )
 
     def flatten_list(items):
@@ -384,10 +419,10 @@ def predict_college_chances():
     try:
         completion = groq_client.chat.completions.create(
             model="llama-3.1-8b-instant",
-            messages=[{"role": "system", "content": "You are a JSON-only response engine. Every array value must be a plain string, never an object."},
+            messages=[{"role": "system", "content": "You are a JSON-only response engine that strictly follows admissions statistics. Every array value must be a plain string, never an object. Never recommend schools the applicant has no realistic chance at."},
                       {"role": "user", "content": prompt}],
-            temperature=0.4,
-            max_tokens=700,
+            temperature=0.1,
+            max_tokens=800,
             response_format={"type": "json_object"}
         )
         result = json.loads(completion.choices[0].message.content)
@@ -414,3 +449,4 @@ def predict_college_chances():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+    
