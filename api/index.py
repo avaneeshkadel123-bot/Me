@@ -63,6 +63,7 @@ def start_session():
     """Dynamically generates a completely unique opening interview prompt based on the selected US track context."""
     data = request.get_json() or {}
     track = data.get('track', 'General Corporate Interview')
+    personal_context = data.get('personal_context', '').strip()
     is_college = "college" in track.lower() or "admission" in track.lower()
 
     if not groq_client:
@@ -77,19 +78,30 @@ def start_session():
             ]
         }), 200
 
+    personal_context_line = (
+        f"\n\nIMPORTANT — The candidate has shared the following personal background. "
+        f"Use this to generate a highly personalized, relevant opening question that connects "
+        f"directly to their specific hobbies, experiences, or background:\n{personal_context}"
+        if personal_context else ""
+    )
+
     if is_college:
         system_instruction = (
             "You are an elite US University Admissions Officer. Generate exactly ONE unique, challenging, "
             "and highly realistic initial opening interview question designed for an elite college applicant. "
-            "Focus on themes of holistic character, community contribution, unique background, or personal growth. "
+            "Focus on themes of holistic character, community contribution, unique background, personal growth, "
+            "or how their hobbies and experiences have shaped them as a person. "
             "Do not output greetings, prefaces, or extra text. Output only the single question."
+            + personal_context_line
         )
     else:
         system_instruction = (
             "You are a principal corporate recruiter managing high-stakes behavioral screening loops in the US market. "
             "Generate exactly ONE unique, realistic, and highly professional initial interview question targeting "
-            "a candidate's behavioral history (e.g., leadership, dealing with ambiguity, or project failures). "
+            "a candidate's behavioral history, leadership experiences, or how their personal interests and hobbies "
+            "have shaped their professional skills and work ethic. "
             "Do not output greetings, prefaces, or extra text. Output only the single question."
+            + personal_context_line
         )
 
     try:
@@ -121,6 +133,7 @@ def process_response():
     transcript = data.get('transcript', '')
     history = data.get('history', [])
     track = data.get('track', 'General Corporate Interview')
+    personal_context = data.get('personal_context', '').strip()
     is_college = "college" in track.lower() or "admission" in track.lower()
 
     cleaned_transcript = transcript.strip()
@@ -136,17 +149,26 @@ def process_response():
         history.append({"role": "assistant", "content": next_question})
         return jsonify({"success": True, "next_question": next_question, "history": history}), 200
 
+    personal_context_line = (
+        f"\n\nCandidate background context (use this to personalize follow-up questions when relevant): {personal_context}"
+        if personal_context else ""
+    )
+
     if is_college:
         context_guideline = (
             "You are an elite US University Admissions Officer. The user is an applicant. Review the conversation history. "
             "Ask exactly ONE incisive, direct follow-up question that builds naturally on their last response or moves to a "
-            "related holistic candidate evaluation metric. Do not offer encouragement, feedback, or commentary. Output only the single question."
+            "related holistic candidate evaluation metric — especially around their hobbies, personal growth, and how their "
+            "experiences have shaped them. Do not offer encouragement, feedback, or commentary. Output only the single question."
+            + personal_context_line
         )
     else:
         context_guideline = (
             "You are an expert technical recruiter interviewing a candidate for a highly competitive US corporate role. "
             "Review the conversation history. Ask exactly ONE professional follow-up question that builds on their story or probes "
-            "for missing elements of the STAR method (metrics, actions, results). Do not offer validation or filler phrases. Output only the question."
+            "for missing elements of the STAR method (metrics, actions, results), or digs deeper into how their personal "
+            "interests and hobbies have developed transferable professional skills. Do not offer validation or filler phrases. Output only the question."
+            + personal_context_line
         )
 
     messages = [{"role": "system", "content": context_guideline}]
