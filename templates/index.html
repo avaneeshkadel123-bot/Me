@@ -51,6 +51,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between tracking-wide relative overflow-x-hidden">
 
+    <!-- Filler Word Popover Tooltip -->
     <div id="fillerPopover" class="hidden absolute p-4 rounded-xl border border-cyan-500/40 bg-slate-900/95 shadow-2xl shadow-cyan-500/20 max-w-xs z-50 text-xs text-slate-300 leading-relaxed font-sans backdrop-blur-md">
         <div class="font-bold text-cyan-400 mb-1 flex items-center gap-1.5">
             <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
@@ -60,6 +61,7 @@
         <span class="text-[10px] text-slate-400 font-mono block border-t border-white/10 pt-1.5 mt-1">Alternative transitional phrases optimized for elite interviews.</span>
     </div>
 
+    <!-- Header -->
     <header class="border-b border-white/10 bg-slate-950/80 backdrop-blur-xl px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         <div class="flex items-center space-x-3">
             <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-cyan-500/30">V</div>
@@ -100,6 +102,7 @@
         </div>
     </header>
 
+    <!-- Hero Banner -->
     <section class="max-w-7xl w-full mx-auto px-4 pt-8 pb-4">
         <div class="glassmorphic-card rounded-3xl p-8 md:p-10 relative overflow-hidden border border-cyan-500/20 bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-cyan-950/40 glow-effect">
             <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -112,7 +115,7 @@
                     <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">Conquer Job & Ivy League Interviews.</span>
                 </h1>
                 <p class="mt-4 text-slate-300 text-sm md:text-base leading-relaxed">
-                    Trained on real US recruitment standards and elite university evaluation matrices. Practice voice responses in real-time, get instant feedback on speech speed (WPM), eliminate filler words ("um", "uh", "like"), and calculate your high school admissions chances with AI precision.
+                    Trained on real US recruitment standards and elite university evaluation matrices. Practice voice responses in real-time, get instant feedback on speech speed (WPM), eliminate filler words ("um", "uh", "like"), score your answers against the STAR framework, and calculate your high school admissions chances with AI precision.
                 </p>
                 <div class="mt-6 flex flex-wrap items-center gap-4">
                     <button onclick="switchTab('simulator')" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/25 transition-all">
@@ -128,11 +131,13 @@
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-4">
 
+        <!-- ===== SIMULATOR TAB ===== -->
         <div id="tabSimulatorView" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
+
+            <!-- Left: Interview Panel -->
             <section class="lg:col-span-7 flex flex-col space-y-6">
-                <div class="glassmorphic-card rounded-2xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[460px]">
-                    
+                <div class="glassmorphic-card rounded-2xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[520px]">
+
                     <div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10 gap-2">
                         <select id="trackSelector" class="bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer font-medium shadow-inner">
                             <option value="General Corporate Interview">US Corporate Recruitment Track</option>
@@ -168,17 +173,31 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 flex flex-wrap items-center justify-center gap-4">
+                    <!-- Buttons Row -->
+                    <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                        <!-- Record -->
                         <button id="recordBtn" disabled class="bg-slate-900 border border-white/15 hover:bg-slate-800 disabled:opacity-40 text-slate-200 p-4 rounded-full transition-all duration-200 group relative" title="Toggle Voice Recording">
                             <svg id="recordIcon" class="w-6 h-6 text-cyan-400 group-hover:scale-105 transition-transform" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"></path>
                             </svg>
                         </button>
 
+                        <!-- Try Again (NEW) -->
+                        <button id="tryAgainBtn" disabled class="bg-slate-900 border border-amber-500/30 hover:bg-slate-800 disabled:opacity-40 text-amber-300 text-xs font-bold px-4 py-3 rounded-xl transition-all duration-200" title="Clear answer and re-record">
+                            🔄 Try Again
+                        </button>
+
+                        <!-- Evaluate STAR (NEW) -->
+                        <button id="evaluateStarBtn" disabled class="bg-slate-900 border border-cyan-500/40 hover:bg-slate-800 disabled:opacity-40 text-cyan-300 text-xs font-bold px-4 py-3 rounded-xl transition-all duration-200" title="Score answer against STAR framework">
+                            🎯 Evaluate STAR
+                        </button>
+
+                        <!-- Next Question -->
                         <button id="nextQuestionBtn" disabled class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-900 disabled:to-slate-900 disabled:opacity-40 border disabled:border-white/5 border-cyan-500/30 text-white text-xs font-bold px-5 py-3 rounded-xl shadow-md transition-all duration-200">
                             Next Question
                         </button>
 
+                        <!-- End Session -->
                         <button id="endSessionBtn" disabled class="bg-slate-900/90 hover:bg-slate-800 border border-white/15 disabled:opacity-40 text-xs font-bold px-5 py-3 rounded-xl text-slate-200 transition-all">
                             Complete & Review Matrix
                         </button>
@@ -187,15 +206,17 @@
                 </div>
             </section>
 
+            <!-- Right: Metrics + STAR Panel -->
             <section class="lg:col-span-5 flex flex-col space-y-6">
-                <div class="glassmorphic-card rounded-2xl p-6 flex flex-col h-full justify-between min-h-[460px]">
+                <div class="glassmorphic-card rounded-2xl p-6 flex flex-col h-full justify-between min-h-[520px]">
                     <div>
                         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-white/10 pb-3 flex items-center justify-between">
                             <span>Session Metrics Diagnostic</span>
                             <span class="text-[10px] text-cyan-400 font-mono">Live Processing</span>
                         </h3>
-                        
-                        <div class="mt-6 space-y-6">
+
+                        <div class="mt-5 space-y-5">
+                            <!-- WPM Gauge -->
                             <div>
                                 <div class="flex justify-between text-xs font-mono mb-2">
                                     <span class="text-slate-400">Pace (Words Per Minute)</span>
@@ -211,9 +232,10 @@
                                 </div>
                             </div>
 
+                            <!-- Counters -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="bg-slate-950/80 border border-white/10 rounded-xl p-4 text-center">
-                                    <span class="block text-[10px] font-mono uppercase tracking-wider text-slate-400">Fluency Delays (>3s)</span>
+                                    <span class="block text-[10px] font-mono uppercase tracking-wider text-slate-400">Fluency Delays (&gt;3s)</span>
                                     <span id="pauseCount" class="text-2xl font-black text-amber-400 font-mono mt-1 block">0</span>
                                 </div>
                                 <div class="bg-slate-950/80 border border-white/10 rounded-xl p-4 text-center">
@@ -221,19 +243,36 @@
                                     <span id="fillerCount" class="text-2xl font-black text-rose-400 font-mono mt-1 block">0</span>
                                 </div>
                             </div>
+
+                            <!-- STAR Evaluation Panel (NEW) -->
+                            <div id="starEvaluationPanel" class="bg-slate-950/90 border border-cyan-500/30 rounded-xl p-3.5 space-y-2">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-cyan-300 border-b border-white/10 pb-1.5">
+                                    <span>🎯 STAR Framework Breakdown</span>
+                                    <span id="concisenessBadge" class="text-[10px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded font-mono border border-cyan-500/30">Conciseness: --</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-[11px] font-mono">
+                                    <div id="starSit" class="bg-slate-900 p-2 rounded border border-white/5 leading-snug"><span class="text-slate-500">S:</span> <span class="text-slate-300">Pending</span></div>
+                                    <div id="starTask" class="bg-slate-900 p-2 rounded border border-white/5 leading-snug"><span class="text-slate-500">T:</span> <span class="text-slate-300">Pending</span></div>
+                                    <div id="starAction" class="bg-slate-900 p-2 rounded border border-white/5 leading-snug"><span class="text-slate-500">A:</span> <span class="text-slate-300">Pending</span></div>
+                                    <div id="starResult" class="bg-slate-900 p-2 rounded border border-white/5 leading-snug"><span class="text-slate-500">R:</span> <span class="text-slate-300">Pending</span></div>
+                                </div>
+                                <p id="executiveSuggestionText" class="text-[11px] text-slate-400 italic pt-1 border-t border-white/5">Record your answer and click "Evaluate STAR" to inspect results.</p>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- Transcript Display -->
                     <div class="mt-4 pt-4 border-t border-white/10">
                         <span class="block text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-2">Interactive Transcript & Filler Detector</span>
-                        <div id="interactiveTranscriptDisplay" class="bg-slate-950/80 border border-white/10 rounded-xl p-3 text-xs leading-relaxed max-h-[100px] overflow-y-auto text-slate-300 font-mono">
+                        <div id="interactiveTranscriptDisplay" class="bg-slate-950/80 border border-white/10 rounded-xl p-3 text-xs leading-relaxed max-h-[90px] overflow-y-auto text-slate-300 font-mono">
                             No answers processed yet. Utter phrases like "um", "uh", or "like" during tracking to inspect highlighted transitions...
                         </div>
                     </div>
 
+                    <!-- Full Session Analysis Output -->
                     <div class="mt-4 pt-4 border-t border-white/10 flex-1 flex flex-col justify-end">
                         <span class="block text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-2">Comprehensive Evaluation Matrix Output</span>
-                        <div id="critiqueOutput" class="bg-slate-950/90 border border-white/10 rounded-xl p-4 min-h-[130px] max-h-[180px] overflow-y-auto text-xs text-slate-300 leading-relaxed font-mono">
+                        <div id="critiqueOutput" class="bg-slate-950/90 border border-white/10 rounded-xl p-4 min-h-[120px] max-h-[180px] overflow-y-auto text-xs text-slate-300 leading-relaxed font-mono">
                             <div id="analysisDefaultText">Awaiting submission context data metrics validation loop...</div>
                             <div id="analysisSkeleton" class="hidden space-y-2.5 w-full">
                                 <div class="h-3 skeleton-shimmer rounded w-11/12"></div>
@@ -248,8 +287,10 @@
 
         </div>
 
+        <!-- ===== COLLEGE PREDICTOR TAB ===== -->
         <div id="tabCollegeView" class="hidden grid-cols-1 lg:grid-cols-12 gap-8">
-            
+
+            <!-- Left: Form -->
             <section class="lg:col-span-5">
                 <div class="glassmorphic-card rounded-2xl p-6 border border-white/10">
                     <h2 class="text-base font-bold text-white mb-1 flex items-center gap-2">
@@ -258,22 +299,32 @@
                     <p class="text-xs text-slate-400 mb-6">Input your high school metrics to calculate college acceptance tiers.</p>
 
                     <form id="collegePredictorForm" onsubmit="calculateCollegeChances(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1">Unweighted GPA (0.0 - 4.0)</label>
-                            <input type="number" id="inputGpa" step="0.01" min="1.0" max="4.0" value="3.85" required class="w-full glassmorphic-input rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
-                        </div>
 
+                        <!-- GPA Row: Unweighted + Weighted (NEW) -->
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">SAT Score (400-1600)</label>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Unweighted GPA (0.0–4.0)</label>
+                                <input type="number" id="inputGpa" step="0.01" min="1.0" max="4.0" value="3.85" required class="w-full glassmorphic-input rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Weighted GPA (0.0–5.0) <span class="text-slate-500 font-normal">optional</span></label>
+                                <input type="number" id="inputWeightedGpa" step="0.01" min="1.0" max="5.0" value="4.45" placeholder="e.g. 4.45" class="w-full glassmorphic-input rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                            </div>
+                        </div>
+
+                        <!-- Test Scores -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">SAT Score (400–1600)</label>
                                 <input type="number" id="inputSat" min="400" max="1600" value="1450" placeholder="Optional" class="w-full glassmorphic-input rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">ACT Score (1-36)</label>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">ACT Score (1–36)</label>
                                 <input type="number" id="inputAct" min="1" max="36" value="32" placeholder="Optional" class="w-full glassmorphic-input rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
                             </div>
                         </div>
 
+                        <!-- AP Count + EC Level -->
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-300 mb-1">AP/IB/Honors Courses</label>
@@ -289,9 +340,17 @@
                             </div>
                         </div>
 
+                        <!-- Target Major -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-300 mb-1">Target Major</label>
                             <input type="text" id="inputMajor" value="Computer Science / Engineering" required class="w-full glassmorphic-input rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                        </div>
+
+                        <!-- Target College (NEW) -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Specific Target College <span class="text-slate-500 font-normal">optional</span></label>
+                            <input type="text" id="inputTargetCollege" placeholder="e.g. University of Michigan" class="w-full glassmorphic-input rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                            <p class="text-[10px] text-slate-500 mt-1 font-mono">Get a dedicated odds assessment for one specific school.</p>
                         </div>
 
                         <button type="submit" id="predictBtn" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs py-3 rounded-xl shadow-lg transition-all mt-4">
@@ -301,6 +360,7 @@
                 </div>
             </section>
 
+            <!-- Right: Results -->
             <section class="lg:col-span-7">
                 <div class="glassmorphic-card rounded-2xl p-6 border border-white/10 h-full flex flex-col justify-between">
                     <div>
@@ -310,19 +370,28 @@
                             Fill in your academic profile on the left and click "Run Admissions Diagnostic" to generate your university matching matrix.
                         </div>
 
-                        <div id="collegeResultsContent" class="hidden space-y-6">
+                        <div id="collegeResultsContent" class="hidden space-y-5">
+
+                            <!-- AI Summary -->
                             <div class="bg-cyan-950/30 border border-cyan-500/20 rounded-xl p-4">
                                 <span class="text-[10px] font-mono text-cyan-400 uppercase tracking-widest block mb-1">Holistic AI Assessment</span>
                                 <p id="chancesSummary" class="text-xs text-slate-200 leading-relaxed"></p>
                             </div>
 
+                            <!-- Target College Eval (NEW — only shows if input provided) -->
+                            <div id="targetCollegeEvalBlock" class="hidden bg-indigo-950/30 border border-indigo-500/20 rounded-xl p-4">
+                                <span class="text-[10px] font-mono text-indigo-400 uppercase tracking-widest block mb-1">Specific School Assessment</span>
+                                <p id="targetCollegeEvalText" class="text-xs text-slate-200 leading-relaxed"></p>
+                            </div>
+
+                            <!-- Tier Grid -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div class="bg-rose-950/20 border border-rose-500/20 rounded-xl p-4">
                                     <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider block mb-2">Reach (&lt;20% Chance)</span>
                                     <ul id="reachList" class="text-xs text-slate-300 space-y-1.5 list-disc list-inside"></ul>
                                 </div>
                                 <div class="bg-amber-950/20 border border-amber-500/20 rounded-xl p-4">
-                                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-2">Target (40-70% Chance)</span>
+                                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-2">Target (40–70% Chance)</span>
                                     <ul id="targetList" class="text-xs text-slate-300 space-y-1.5 list-disc list-inside"></ul>
                                 </div>
                                 <div class="bg-emerald-950/20 border border-emerald-500/20 rounded-xl p-4">
@@ -331,6 +400,7 @@
                                 </div>
                             </div>
 
+                            <!-- Growth Tips -->
                             <div class="bg-slate-950/80 border border-white/10 rounded-xl p-4">
                                 <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest block mb-2">Strategies to Boost Admission Odds</span>
                                 <ul id="growthTipsList" class="text-xs text-slate-300 space-y-1.5 list-decimal list-inside"></ul>
@@ -352,6 +422,7 @@
         &copy; 2026 VoxCoach AI. Structured Communication Systems & High School Career Engineering.
     </footer>
 
+    <!-- Auth Modal -->
     <div id="authModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
         <div class="glassmorphic-card rounded-3xl max-w-md w-full p-6 md:p-8 relative border border-cyan-500/30 shadow-2xl shadow-cyan-500/10">
             <button onclick="toggleAuthModal(false)" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg transition-colors">
@@ -394,9 +465,7 @@
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
                     <input type="password" id="authPassword" required minlength="6" placeholder="••••••••" class="w-full glassmorphic-input rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500">
                 </div>
-
                 <div id="authMessage" class="hidden text-xs p-3 rounded-xl border font-mono"></div>
-
                 <button type="submit" id="authSubmitBtn" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs py-3 rounded-xl shadow-lg transition-all">
                     Sign In
                 </button>
@@ -415,13 +484,13 @@
     </div>
 
     <script>
+        // ==================== SUPABASE AUTH ====================
         let supabaseClient = null;
         let currentAuthMode = 'login';
 
         function initSupabase() {
             const url = "{{ supabase_url }}" || localStorage.getItem('SUPABASE_URL') || '';
             const key = "{{ supabase_anon_key }}" || localStorage.getItem('SUPABASE_ANON_KEY') || '';
-
             if (url && key && window.supabase) {
                 try {
                     supabaseClient = window.supabase.createClient(url, key);
@@ -441,68 +510,47 @@
 
         function toggleAuthModal(show) {
             const modal = document.getElementById('authModal');
-            if (show) {
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-                hideAuthMessage();
-            }
+            if (show) { modal.classList.remove('hidden'); } else { modal.classList.add('hidden'); hideAuthMessage(); }
         }
 
         function switchAuthMode(mode) {
             currentAuthMode = mode;
-            const loginTab = document.getElementById('authTabLogin');
-            const signupTab = document.getElementById('authTabSignup');
-            const submitBtn = document.getElementById('authSubmitBtn');
             hideAuthMessage();
-
             if (mode === 'login') {
-                loginTab.className = "flex-1 py-2 text-xs font-bold rounded-lg text-white bg-cyan-600 transition-all";
-                signupTab.className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all";
-                submitBtn.innerText = "Sign In";
+                document.getElementById('authTabLogin').className = "flex-1 py-2 text-xs font-bold rounded-lg text-white bg-cyan-600 transition-all";
+                document.getElementById('authTabSignup').className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all";
+                document.getElementById('authSubmitBtn').innerText = "Sign In";
             } else {
-                signupTab.className = "flex-1 py-2 text-xs font-bold rounded-lg text-white bg-cyan-600 transition-all";
-                loginTab.className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all";
-                submitBtn.innerText = "Create Account";
+                document.getElementById('authTabSignup').className = "flex-1 py-2 text-xs font-bold rounded-lg text-white bg-cyan-600 transition-all";
+                document.getElementById('authTabLogin').className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all";
+                document.getElementById('authSubmitBtn').innerText = "Create Account";
             }
         }
 
         function showAuthMessage(msg, isError = false) {
             const el = document.getElementById('authMessage');
             el.classList.remove('hidden', 'bg-rose-950/60', 'border-rose-500/40', 'text-rose-300', 'bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
-            if (isError) {
-                el.classList.add('bg-rose-950/60', 'border-rose-500/40', 'text-rose-300');
-            } else {
-                el.classList.add('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
-            }
+            el.classList.add(isError ? 'bg-rose-950/60' : 'bg-emerald-950/60', isError ? 'border-rose-500/40' : 'border-emerald-500/40', isError ? 'text-rose-300' : 'text-emerald-300');
             el.innerText = msg;
         }
 
-        function hideAuthMessage() {
-            document.getElementById('authMessage').classList.add('hidden');
-        }
+        function hideAuthMessage() { document.getElementById('authMessage').classList.add('hidden'); }
 
         async function handleEmailAuth(event) {
             event.preventDefault();
-            if (!supabaseClient) {
-                showAuthMessage("Supabase client is not initialized. Please configure credentials.", true);
-                return;
-            }
-
+            if (!supabaseClient) { showAuthMessage("Supabase client is not initialized. Please configure credentials.", true); return; }
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
             const submitBtn = document.getElementById('authSubmitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Processing...";
-
+            submitBtn.disabled = true; submitBtn.innerText = "Processing...";
             try {
                 if (currentAuthMode === 'login') {
-                    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
                     if (error) throw error;
                     showAuthMessage("Signed in successfully!");
                     setTimeout(() => toggleAuthModal(false), 1000);
                 } else {
-                    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+                    const { error } = await supabaseClient.auth.signUp({ email, password });
                     if (error) throw error;
                     showAuthMessage("Account created! Check your email for verification if required.");
                     setTimeout(() => toggleAuthModal(false), 2000);
@@ -516,28 +564,15 @@
         }
 
         async function handleGoogleSignIn() {
-            if (!supabaseClient) {
-                showAuthMessage("Supabase client is not initialized. Please configure credentials.", true);
-                return;
-            }
+            if (!supabaseClient) { showAuthMessage("Supabase client is not initialized. Please configure credentials.", true); return; }
             try {
-                const { error } = await supabaseClient.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: window.location.origin
-                    }
-                });
+                const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
                 if (error) throw error;
-            } catch (err) {
-                showAuthMessage(err.message || "Google OAuth failed", true);
-            }
+            } catch (err) { showAuthMessage(err.message || "Google OAuth failed", true); }
         }
 
         async function handleSignOut() {
-            if (supabaseClient) {
-                await supabaseClient.auth.signOut();
-                updateAuthUI(null);
-            }
+            if (supabaseClient) { await supabaseClient.auth.signOut(); updateAuthUI(null); }
         }
 
         async function checkAuthState() {
@@ -551,7 +586,6 @@
             const profileBadge = document.getElementById('userProfileBadge');
             const emailDisplay = document.getElementById('userEmailDisplay');
             const avatar = document.getElementById('userAvatar');
-
             if (user) {
                 openBtn.classList.add('hidden');
                 profileBadge.classList.remove('hidden');
@@ -563,10 +597,7 @@
             }
         }
 
-        function toggleConfigInputs() {
-            const el = document.getElementById('configInputs');
-            el.classList.toggle('hidden');
-        }
+        function toggleConfigInputs() { document.getElementById('configInputs').classList.toggle('hidden'); }
 
         function saveManualSupabaseConfig() {
             const url = document.getElementById('manualSupabaseUrl').value.trim();
@@ -579,31 +610,26 @@
             }
         }
 
+        // ==================== TAB SWITCHING ====================
         function switchTab(tab) {
             const simView = document.getElementById('tabSimulatorView');
             const collegeView = document.getElementById('tabCollegeView');
             const simBtn = document.getElementById('navSimBtn');
             const collegeBtn = document.getElementById('navCollegeBtn');
-
             if (tab === 'simulator') {
-                simView.classList.remove('hidden');
-                simView.classList.add('grid');
-                collegeView.classList.add('hidden');
-                collegeView.classList.remove('grid');
-
+                simView.classList.remove('hidden'); simView.classList.add('grid');
+                collegeView.classList.add('hidden'); collegeView.classList.remove('grid');
                 simBtn.className = "px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-cyan-600 to-blue-600 transition-all shadow-md";
                 collegeBtn.className = "px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all";
             } else {
-                collegeView.classList.remove('hidden');
-                collegeView.classList.add('grid');
-                simView.classList.add('hidden');
-                simView.classList.remove('grid');
-
+                collegeView.classList.remove('hidden'); collegeView.classList.add('grid');
+                simView.classList.add('hidden'); simView.classList.remove('grid');
                 collegeBtn.className = "px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-cyan-600 to-blue-600 transition-all shadow-md";
                 simBtn.className = "px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all";
             }
         }
 
+        // ==================== COLLEGE PREDICTOR ====================
         async function calculateCollegeChances(event) {
             event.preventDefault();
             const btn = document.getElementById('predictBtn');
@@ -612,11 +638,13 @@
 
             const payload = {
                 gpa: document.getElementById('inputGpa').value,
-                sat: document.getElementById('inputSat').value,
-                act: document.getElementById('inputAct').value,
+                weighted_gpa: document.getElementById('inputWeightedGpa').value || null,
+                sat: document.getElementById('inputSat').value || null,
+                act: document.getElementById('inputAct').value || null,
                 ap_count: document.getElementById('inputApCount').value,
                 ec_level: document.getElementById('inputEcLevel').value,
-                major: document.getElementById('inputMajor').value
+                major: document.getElementById('inputMajor').value,
+                target_college: document.getElementById('inputTargetCollege').value || ''
             };
 
             try {
@@ -633,15 +661,36 @@
 
                     document.getElementById('chancesSummary').innerText = data.chances_summary;
 
-                    const renderList = (elementId, items) => {
-                        const el = document.getElementById(elementId);
-                        el.innerHTML = items.map(i => `<li>${i}</li>`).join('');
+                    // Safely coerce each item to a plain string — handles string arrays,
+                    // object arrays like [{name:"Harvard"}], or mixed responses from the LLM
+                    const extractStr = (i) => {
+                        if (typeof i === 'string') return i;
+                        if (typeof i === 'object' && i !== null) {
+                            // Common keys the LLM might use
+                            return i.name || i.university || i.college || i.school ||
+                                   i.tip || i.strategy || i.text || i.value ||
+                                   Object.values(i)[0] || JSON.stringify(i);
+                        }
+                        return String(i);
                     };
-
+                    const renderList = (elementId, items) => {
+                        document.getElementById(elementId).innerHTML =
+                            (items || []).map(i => `<li>${extractStr(i)}</li>`).join('');
+                    };
                     renderList('reachList', data.reach);
                     renderList('targetList', data.target);
                     renderList('safetyList', data.safety);
                     renderList('growthTipsList', data.growth_tips);
+
+                    // Target college eval block (NEW)
+                    const evalBlock = document.getElementById('targetCollegeEvalBlock');
+                    const evalText = document.getElementById('targetCollegeEvalText');
+                    if (data.target_college_eval && data.target_college_eval.trim() !== '') {
+                        evalText.innerText = data.target_college_eval;
+                        evalBlock.classList.remove('hidden');
+                    } else {
+                        evalBlock.classList.add('hidden');
+                    }
                 }
             } catch (err) {
                 console.error("College chance calculation error:", err);
@@ -651,17 +700,56 @@
             }
         }
 
+        // ==================== FILLER WORD SYSTEM ====================
+        const transitionalAlternatives = {
+            "um": "Instead of executing a vocal stall like 'um', practice using stabilizing structural bridges: 'Certainly,' 'Consequently,' or pause silently for 1 second to gather focus.",
+            "uh": "Replacing 'uh' with active professional connectors preserves vocal command. Leverage transitional hooks such as: 'Importantly,' 'Specifically,' or 'Moving forward.'",
+            "like": "Using 'like' as a loose narrative filler dilutes data authority. Replace with analytical metrics indicators: 'For instance,' 'Namely,' or 'Particularly.'"
+        };
+
+        function renderHighlightedTranscript(text) {
+            const container = document.getElementById('interactiveTranscriptDisplay');
+            if (!text || text.trim() === "") {
+                container.innerText = "No vocal answers captured in this interaction turn window.";
+                return;
+            }
+            const tokens = text.split(/(\b(?:um|uh|like)\b)/i);
+            container.innerHTML = "";
+            tokens.forEach(token => {
+                const standardized = token.toLowerCase().trim();
+                if (transitionalAlternatives[standardized]) {
+                    const span = document.createElement('span');
+                    span.className = "bg-rose-950 text-rose-300 font-bold px-1.5 py-0.5 rounded border border-rose-800/80 cursor-pointer hover:bg-rose-900 transition-colors inline-block relative mx-0.5";
+                    span.innerText = token;
+                    span.addEventListener('click', (e) => { e.stopPropagation(); showPopoverTooltip(e.target, standardized); });
+                    container.appendChild(span);
+                } else {
+                    container.appendChild(document.createTextNode(token));
+                }
+            });
+        }
+
+        function showPopoverTooltip(element, fillerWord) {
+            const popover = document.getElementById('fillerPopover');
+            document.getElementById('popoverAlternativeText').innerText = transitionalAlternatives[fillerWord];
+            popover.classList.remove('hidden');
+            const rect = element.getBoundingClientRect();
+            popover.style.left = `${rect.left + window.pageXOffset - 20}px`;
+            popover.style.top = `${rect.top + window.pageYOffset - popover.offsetHeight - 12}px`;
+        }
+
+        document.addEventListener('click', () => { document.getElementById('fillerPopover').classList.add('hidden'); });
+
+        // ==================== SIMULATOR STATE ====================
         let sessionHistory = [];
         let currentTrack = "";
         let isRecording = false;
         let finalTranscript = "";
-        
         let speechStartTime = null;
         let pauseTrackingTimeout = null;
         let totalWordsCount = 0;
         let detectedFillerHits = 0;
         let detectedFluencyDelays = 0;
-
         let audioCtx = null;
         let audioAnalyser = null;
         let audioSource = null;
@@ -680,63 +768,33 @@
             document.getElementById('questionDisplay').innerText = "Critical Warning: This browser does not support native Web Speech APIs. Please use Google Chrome or Microsoft Edge.";
         }
 
-        const transitionalAlternatives = {
-            "um": "Instead of executing a vocal stall like 'um', practice using stabilizing structural bridges: 'Certainly,' 'Consequently,' or pause silently for 1 second to gather focus.",
-            "uh": "Replacing 'uh' with active professional connectors preserves vocal command. Leverage transitional hooks such as: 'Importantly,' 'Specifically,' or 'Moving forward.'",
-            "like": "Using 'like' as a loose narrative filler dilutes data authority. Replace with analytical metrics indicators: 'For instance,' 'Namely,' or 'Particularly.'"
-        };
-
-        function renderHighlightedTranscript(text) {
-            const container = document.getElementById('interactiveTranscriptDisplay');
-            if (!text || text.trim() === "") {
-                container.innerText = "No vocal answers captured in this interaction turn window.";
-                return;
-            }
-
-            const tokens = text.split(/(\b(?:um|uh|like)\b)/i);
-            container.innerHTML = "";
-
-            tokens.forEach(token => {
-                const standardized = token.toLowerCase().trim();
-                if (transitionalAlternatives[standardized]) {
-                    const span = document.createElement('span');
-                    span.className = "bg-rose-950 text-rose-300 font-bold px-1.5 py-0.5 rounded border border-rose-800/80 cursor-pointer hover:bg-rose-900 transition-colors inline-block relative mx-0.5";
-                    span.innerText = token;
-                    
-                    span.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        showPopoverTooltip(e.target, standardized);
-                    });
-                    container.appendChild(span);
-                } else {
-                    container.appendChild(document.createTextNode(token));
-                }
-            });
+        function resetSessionMetrics() {
+            totalWordsCount = 0;
+            detectedFillerHits = 0;
+            detectedFluencyDelays = 0;
+            finalTranscript = "";
+            document.getElementById('fillerCount').innerText = "0";
+            document.getElementById('pauseCount').innerText = "0";
+            document.getElementById('wpmValue').innerText = "0 WPM";
+            document.getElementById('wpmGauge').style.width = "0%";
+            document.getElementById('transcriptionFallback').innerText = "";
+            document.getElementById('transcriptionFallback').classList.add('hidden');
+            document.getElementById('interactiveTranscriptDisplay').innerText = 'No answers processed yet. Utter phrases like "um", "uh", or "like" during tracking to inspect highlighted transitions...';
         }
 
-        function showPopoverTooltip(element, fillerWord) {
-            const popover = document.getElementById('fillerPopover');
-            const txt = document.getElementById('popoverAlternativeText');
-            
-            txt.innerText = transitionalAlternatives[fillerWord];
-            popover.classList.remove('hidden');
-
-            const rect = element.getBoundingClientRect();
-            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            popover.style.left = `${rect.left + scrollLeft - 20}px`;
-            popover.style.top = `${rect.top + scrollTop - popover.offsetHeight - 12}px`;
+        function resetStarPanel() {
+            document.getElementById('concisenessBadge').innerText = "Conciseness: --";
+            document.getElementById('starSit').innerHTML = `<span class="text-slate-500">S:</span> <span class="text-slate-300">Pending</span>`;
+            document.getElementById('starTask').innerHTML = `<span class="text-slate-500">T:</span> <span class="text-slate-300">Pending</span>`;
+            document.getElementById('starAction').innerHTML = `<span class="text-slate-500">A:</span> <span class="text-slate-300">Pending</span>`;
+            document.getElementById('starResult').innerHTML = `<span class="text-slate-500">R:</span> <span class="text-slate-300">Pending</span>`;
+            document.getElementById('executiveSuggestionText').innerText = 'Record your answer and click "Evaluate STAR" to inspect results.';
         }
 
-        document.addEventListener('click', () => {
-            document.getElementById('fillerPopover').classList.add('hidden');
-        });
-
+        // ==================== SESSION CONTROLS ====================
         document.getElementById('startSessionBtn').addEventListener('click', async () => {
             currentTrack = document.getElementById('trackSelector').value;
             document.getElementById('questionDisplay').innerText = "Dynamically generating unique opening scenario prompt...";
-            
             try {
                 const res = await fetch('/api/session/start', {
                     method: 'POST',
@@ -744,43 +802,53 @@
                     body: JSON.stringify({ track: currentTrack })
                 });
                 const data = await res.json();
-                
                 if (data.success) {
                     sessionHistory = data.history;
                     document.getElementById('questionDisplay').innerText = data.current_question;
-                    
-                    totalWordsCount = 0;
-                    detectedFillerHits = 0;
-                    detectedFluencyDelays = 0;
-                    finalTranscript = "";
-                    document.getElementById('fillerCount').innerText = "0";
-                    document.getElementById('pauseCount').innerText = "0";
-                    document.getElementById('wpmValue').innerText = "0 WPM";
-                    document.getElementById('wpmGauge').style.width = "0%";
-                    document.getElementById('transcriptionFallback').innerText = "";
-                    document.getElementById('transcriptionFallback').classList.add('hidden');
-                    document.getElementById('interactiveTranscriptDisplay').innerText = "No answers processed yet. Utter phrases like \"um\", \"uh\", or \"like\" during tracking to inspect highlighted transitions...";
+                    resetSessionMetrics();
+                    resetStarPanel();
                     document.getElementById('critiqueOutput').innerHTML = '<div id="analysisDefaultText">Awaiting response collection window loop...</div>';
-                    
                     document.getElementById('recordBtn').removeAttribute('disabled');
+                    document.getElementById('tryAgainBtn').removeAttribute('disabled');
+                    document.getElementById('evaluateStarBtn').removeAttribute('disabled');
                     document.getElementById('endSessionBtn').removeAttribute('disabled');
                     document.getElementById('nextQuestionBtn').setAttribute('disabled', 'true');
                 } else {
                     document.getElementById('questionDisplay').innerText = "Failed to launch context: " + data.error;
                 }
             } catch (err) {
-                console.error("Failed to map initial session routing metrics:", err);
                 document.getElementById('questionDisplay').innerText = "Server pipeline error launching session context.";
             }
         });
 
         document.getElementById('recordBtn').addEventListener('click', () => {
-            if (!isRecording) {
-                startRecordingSequence();
-            } else {
-                isRecording = false;
-                if (speechEngine) speechEngine.stop();
+            if (!isRecording) { startRecordingSequence(); } else { isRecording = false; if (speechEngine) speechEngine.stop(); }
+        });
+
+        // NEW: Try Again — clears answer and lets user re-record
+        document.getElementById('tryAgainBtn').addEventListener('click', () => {
+            if (isRecording) { isRecording = false; if (speechEngine) speechEngine.stop(); }
+            finalTranscript = "";
+            totalWordsCount = 0;
+            detectedFillerHits = 0;
+            detectedFluencyDelays = 0;
+            document.getElementById('fillerCount').innerText = "0";
+            document.getElementById('pauseCount').innerText = "0";
+            document.getElementById('transcriptionFallback').innerText = "";
+            document.getElementById('transcriptionFallback').classList.add('hidden');
+            document.getElementById('waveformPlaceholder').classList.remove('hidden');
+            document.getElementById('interactiveTranscriptDisplay').innerText = "Answer cleared. Record again when ready.";
+            document.getElementById('nextQuestionBtn').setAttribute('disabled', 'true');
+            resetStarPanel();
+        });
+
+        // NEW: Evaluate STAR
+        document.getElementById('evaluateStarBtn').addEventListener('click', () => {
+            if (!finalTranscript || finalTranscript.trim() === "") {
+                document.getElementById('executiveSuggestionText').innerText = "⚠️ No recorded answer to evaluate. Record a response first.";
+                return;
             }
+            evaluateLatestTurn(finalTranscript);
         });
 
         document.getElementById('nextQuestionBtn').addEventListener('click', async () => {
@@ -788,69 +856,51 @@
                 document.getElementById('questionDisplay').innerText = "Please record an answer voice track completely before proceeding.";
                 return;
             }
-
             document.getElementById('nextQuestionBtn').setAttribute('disabled', 'true');
             document.getElementById('recordBtn').setAttribute('disabled', 'true');
             document.getElementById('questionDisplay').innerText = "Processing response records through rapid inference engine...";
-            
             if (!sessionHistory.some(turn => turn.content === finalTranscript.trim())) {
                 sessionHistory.push({ "role": "user", "content": finalTranscript.trim() });
             }
-
             try {
                 const res = await fetch('/api/session/respond', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        transcript: finalTranscript,
-                        history: sessionHistory,
-                        track: currentTrack
-                    })
+                    body: JSON.stringify({ transcript: finalTranscript, history: sessionHistory, track: currentTrack })
                 });
                 const data = await res.json();
-                
                 document.getElementById('recordBtn').removeAttribute('disabled');
-                
                 if (data.success) {
                     sessionHistory = data.history;
                     document.getElementById('questionDisplay').innerText = data.next_question;
-                    
                     finalTranscript = "";
                     document.getElementById('transcriptionFallback').innerText = "";
                     document.getElementById('transcriptionFallback').classList.add('hidden');
+                    resetStarPanel();
                 } else {
                     document.getElementById('questionDisplay').innerText = "Error: " + data.error;
                     document.getElementById('nextQuestionBtn').removeAttribute('disabled');
                 }
             } catch (err) {
-                console.error("Pipeline breakdown sending response turn:", err);
                 document.getElementById('questionDisplay').innerText = "Network connection drop encountered.";
                 document.getElementById('recordBtn').removeAttribute('disabled');
             }
         });
 
         document.getElementById('endSessionBtn').addEventListener('click', async () => {
-            if (isRecording) {
-                isRecording = false;
-                if (speechEngine) speechEngine.stop();
+            if (isRecording) { isRecording = false; if (speechEngine) speechEngine.stop(); }
+
+            // If there's an unevaluated transcript, run STAR on it first before full analysis
+            if (finalTranscript && finalTranscript.trim() !== "") {
+                evaluateLatestTurn(finalTranscript);
             }
 
             let historyPayload = [...sessionHistory];
-            if (finalTranscript && finalTranscript.trim() !== "") {
-                if (!historyPayload.some(turn => turn.content === finalTranscript.trim())) {
-                    historyPayload.push({ "role": "user", "content": finalTranscript.trim() });
-                }
+            if (finalTranscript && finalTranscript.trim() !== "" && !historyPayload.some(turn => turn.content === finalTranscript.trim())) {
+                historyPayload.push({ "role": "user", "content": finalTranscript.trim() });
             }
-
             const outputBox = document.getElementById('critiqueOutput');
-            outputBox.innerHTML = `
-                <div id="analysisSkeleton" class="space-y-2.5 w-full">
-                    <div class="h-3 skeleton-shimmer rounded w-11/12"></div>
-                    <div class="h-3 skeleton-shimmer rounded w-full"></div>
-                    <div class="h-3 skeleton-shimmer rounded w-4/5"></div>
-                </div>
-            `;
-
+            outputBox.innerHTML = `<div class="space-y-2.5 w-full"><div class="h-3 skeleton-shimmer rounded w-11/12"></div><div class="h-3 skeleton-shimmer rounded w-full"></div><div class="h-3 skeleton-shimmer rounded w-4/5"></div></div>`;
             try {
                 const res = await fetch('/api/session/analyze', {
                     method: 'POST',
@@ -858,25 +908,60 @@
                     body: JSON.stringify({ history: historyPayload })
                 });
                 const data = await res.json();
-                
                 if (data.success) {
                     outputBox.innerHTML = `<div class="whitespace-pre-line text-slate-300 font-sans">${data.analysis}</div>`;
                 } else {
                     outputBox.innerHTML = `<div class="text-rose-400 font-mono">Error generating analysis: ${data.error}</div>`;
                 }
             } catch (err) {
-                outputBox.innerHTML = `<div class="text-rose-400 font-mono">Network error connection drop during diagnostic computation.</div>`;
+                outputBox.innerHTML = `<div class="text-rose-400 font-mono">Network error during diagnostic computation.</div>`;
             }
         });
 
+        // ==================== STAR EVALUATION (NEW) ====================
+        async function evaluateLatestTurn(transcriptText) {
+            // Show loading state in STAR panel
+            document.getElementById('starSit').innerHTML = `<span class="text-slate-500">S:</span> <span class="text-cyan-400 animate-pulse">Evaluating...</span>`;
+            document.getElementById('starTask').innerHTML = `<span class="text-slate-500">T:</span> <span class="text-cyan-400 animate-pulse">...</span>`;
+            document.getElementById('starAction').innerHTML = `<span class="text-slate-500">A:</span> <span class="text-cyan-400 animate-pulse">...</span>`;
+            document.getElementById('starResult').innerHTML = `<span class="text-slate-500">R:</span> <span class="text-cyan-400 animate-pulse">...</span>`;
+            document.getElementById('executiveSuggestionText').innerText = "Running AI evaluation...";
+
+            try {
+                const res = await fetch('/api/session/evaluate-turn', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ transcript: transcriptText, track: currentTrack })
+                });
+                const data = await res.json();
+                if (data.success && data.star_eval) {
+                    const se = data.star_eval;
+                    document.getElementById('concisenessBadge').innerText = `Conciseness: ${se.conciseness_score || '--'}`;
+                    document.getElementById('starSit').innerHTML = `<span class="text-slate-500">S:</span> <span class="text-slate-200">${se.situation || 'N/A'}</span>`;
+                    document.getElementById('starTask').innerHTML = `<span class="text-slate-500">T:</span> <span class="text-slate-200">${se.task || 'N/A'}</span>`;
+                    document.getElementById('starAction').innerHTML = `<span class="text-slate-500">A:</span> <span class="text-slate-200">${se.action || 'N/A'}</span>`;
+                    document.getElementById('starResult').innerHTML = `<span class="text-slate-500">R:</span> <span class="text-slate-200">${se.result || 'N/A'}</span>`;
+                    document.getElementById('executiveSuggestionText').innerText = se.executive_suggestion || '';
+                    // Allow advancing to next question after STAR eval
+                    document.getElementById('nextQuestionBtn').removeAttribute('disabled');
+                } else {
+                    document.getElementById('executiveSuggestionText').innerText = "Evaluation failed. Try again.";
+                    resetStarPanel();
+                }
+            } catch (err) {
+                document.getElementById('executiveSuggestionText').innerText = "Network error during STAR evaluation.";
+                resetStarPanel();
+            }
+        }
+
+        // ==================== RECORDING ENGINE ====================
         async function startRecordingSequence() {
             if (!speechEngine) return;
-            
             isRecording = true;
             speechStartTime = Date.now();
             document.getElementById('transcriptionFallback').classList.remove('hidden');
             document.getElementById('transcriptionFallback').innerText = "Listening to vocal input stream...";
-            
+
             document.getElementById('avatarContainer').classList.remove('border-slate-800');
             document.getElementById('avatarContainer').classList.add('border-cyan-500', 'shadow-cyan-500/30');
             document.getElementById('avatarIcon').classList.remove('text-slate-500');
@@ -884,7 +969,7 @@
             document.getElementById('avatarPulse').classList.remove('hidden');
             document.getElementById('recordBtn').classList.remove('bg-slate-900');
             document.getElementById('recordBtn').classList.add('bg-cyan-950', 'border-cyan-500/50');
-            
+
             try {
                 mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
                 initializeWebAudioSpectrum(mediaStream);
@@ -903,44 +988,35 @@
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             audioAnalyser = audioCtx.createAnalyser();
             audioSource = audioCtx.createMediaStreamSource(stream);
-            
             audioSource.connect(audioAnalyser);
-            audioAnalyser.fftSize = 64; 
-            
+            audioAnalyser.fftSize = 64;
             const bufferLength = audioAnalyser.frequencyBinCount;
             const dataArray = new Uint8Array(bufferLength);
-            
             const canvas = document.getElementById('audioSpectrum');
             const canvasCtx = canvas.getContext('2d');
             document.getElementById('waveformPlaceholder').classList.add('hidden');
-            
-            mixSpectrumFrames();
-            
+
             function mixSpectrumFrames() {
                 if (!isRecording) return;
                 animationFrameId = requestAnimationFrame(mixSpectrumFrames);
-                
                 audioAnalyser.getByteFrequencyData(dataArray);
                 canvasCtx.fillStyle = 'rgba(2, 6, 23, 0.4)';
                 canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-                
                 const barWidth = (canvas.width / bufferLength) * 1.5;
-                let barHeight;
                 let x = 0;
-                
                 for (let i = 0; i < bufferLength; i++) {
-                    barHeight = dataArray[i] / 2.5;
+                    const barHeight = dataArray[i] / 2.5;
                     canvasCtx.fillStyle = `rgba(34, 211, 238, ${0.4 + (barHeight / canvas.height)})`;
                     canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
                     x += barWidth + 4;
                 }
             }
+            mixSpectrumFrames();
         }
 
         function resetFluencyDelayTicker() {
             clearTimeout(pauseTrackingTimeout);
             if (!isRecording) return;
-            
             pauseTrackingTimeout = setTimeout(() => {
                 if (isRecording) {
                     detectedFluencyDelays++;
@@ -950,34 +1026,30 @@
             }, 3000);
         }
 
+        // ==================== SPEECH ENGINE EVENTS ====================
         if (speechEngine) {
             speechEngine.onresult = (event) => {
-                resetFluencyDelayTicker(); 
+                resetFluencyDelayTicker();
                 let cumulativeText = "";
-                
                 for (let i = 0; i < event.results.length; ++i) {
                     cumulativeText += event.results[i][0].transcript + " ";
                 }
-                
                 finalTranscript = cumulativeText.trim();
                 document.getElementById('transcriptionFallback').innerText = finalTranscript;
-                
                 renderHighlightedTranscript(finalTranscript);
-                
+
                 const matches = finalTranscript.toLowerCase().match(/\b(um|uh|like)\b/g);
                 detectedFillerHits = matches ? matches.length : 0;
                 document.getElementById('fillerCount').innerText = detectedFillerHits;
-                
+
                 const splitTextArray = finalTranscript.split(/\s+/).filter(w => w.length > 0);
                 totalWordsCount = splitTextArray.length;
-                
                 if (speechStartTime && totalWordsCount > 0) {
                     const elapsedMinutes = (Date.now() - speechStartTime) / 60000;
                     if (elapsedMinutes > 0.05) {
                         const calculatedWPM = Math.round(totalWordsCount / elapsedMinutes);
                         document.getElementById('wpmValue').innerText = `${calculatedWPM} WPM`;
-                        const percentageGaugeWidth = Math.min((calculatedWPM / 200) * 100, 100);
-                        document.getElementById('wpmGauge').style.width = `${percentageGaugeWidth}%`;
+                        document.getElementById('wpmGauge').style.width = `${Math.min((calculatedWPM / 200) * 100, 100)}%`;
                     }
                 }
             };
@@ -994,28 +1066,20 @@
                 document.getElementById('waveformPlaceholder').classList.remove('hidden');
                 document.getElementById('waveformPlaceholder').innerText = "Audio Input Offline";
                 document.getElementById('recordBtn').className = "bg-slate-900 border border-white/15 hover:bg-slate-800 disabled:opacity-40 text-slate-200 p-4 rounded-full transition-all duration-200 group relative";
-                
                 clearTimeout(pauseTrackingTimeout);
-                
-                if (mediaStream) {
-                    mediaStream.getTracks().forEach(track => track.stop());
-                }
-                if (animationFrameId) {
-                    cancelAnimationFrame(animationFrameId);
-                }
-                if (audioCtx) {
-                    try { audioCtx.close(); } catch(e) {}
-                }
-
+                if (mediaStream) { mediaStream.getTracks().forEach(track => track.stop()); }
+                if (animationFrameId) { cancelAnimationFrame(animationFrameId); }
+                if (audioCtx) { try { audioCtx.close(); } catch(e) {} }
+                // Auto-run STAR evaluation and enable next question when recording stops
                 if (finalTranscript && finalTranscript.trim() !== "") {
                     document.getElementById('nextQuestionBtn').removeAttribute('disabled');
+                    evaluateLatestTurn(finalTranscript);
                 }
             };
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            initSupabase();
-        });
+        // ==================== INIT ====================
+        window.addEventListener('DOMContentLoaded', () => { initSupabase(); });
     </script>
 </body>
 </html>
